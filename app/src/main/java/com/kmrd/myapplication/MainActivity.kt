@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
                 Toast.makeText(this, "Pressed id_sign_up", Toast.LENGTH_LONG).show()
             }
             R.id.id_sign_in -> {
-                Toast.makeText(this, "Pressed id_sign_in", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Pressed id_sign_in-test", Toast.LENGTH_LONG).show()
             }
             R.id.id_sign_out -> {
                 Toast.makeText(this, "Pressed id_sign_out-test", Toast.LENGTH_LONG).show()
