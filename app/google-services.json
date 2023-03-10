@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "321852379017",
+    "project_id": "tablakotlin-23381",
+    "storage_bucket": "tablakotlin-23381.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:321852379017:android:853ff9e65c5f578937db58",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "321852379017-duf69lf45i42djo6tcgtu1uibnd1aush.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVYkw4fU7svzLCTmRCD7IKhamvhU4zWyA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "321852379017-duf69lf45i42djo6tcgtu1uibnd1aush.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:321852379017:android:b38f6bc8cc39c0c837db58",
+        "android_client_info": {
+          "package_name": "com.kmrd.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "321852379017-duf69lf45i42djo6tcgtu1uibnd1aush.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVYkw4fU7svzLCTmRCD7IKhamvhU4zWyA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "321852379017-duf69lf45i42djo6tcgtu1uibnd1aush.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
