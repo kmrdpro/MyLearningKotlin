@@ -26,5 +26,9 @@
     <string name="send_verification_done">На вашу почту была отправлена ссылка для подтверждения вашего аккаунта. Пожалуйста подтвердите ваш аккаунт</string>
     <string name="email_reset_password_was_sent">Ссылка для восстановления пароля была отправлена на вашу почту</string>
     <string name="dialog_reset_email_message">Для восстановления пароля укажите Email адрес</string>
+    <!-- Sign Dialog -->
+    <string name="link_done">Email успешно подключен к Google аккаунту</string>
+    <string name="enter_to_g">У вас уже заригистрирован пользователь по Google, зайдите по нему</string>
+
 
 </resources>
