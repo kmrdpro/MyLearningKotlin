@@ -17,7 +17,7 @@ import com.kmrd.myapplication.utils.ImagePicker
 import io.ak1.pix.helpers.PixBus
 
 class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
-    lateinit var arr2: ArrayList<Uri>
+
     lateinit var rootElement: ActivityEditAdsBinding
     private val dialog = DialogSpinnerHelper()
 
@@ -66,13 +66,25 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     }
 
     fun onClickGetImages(view: android.view.View) {
-//        ImagePicker.getImages(this, 3)
-//        PixBus.results { results -> arr2 = results.data as ArrayList<Uri> }
+        var arr2: ArrayList<Uri> = arrayListOf()
+        ImagePicker.getImages(this, 3)
+        PixBus.results { results -> arr2 = results.data as ArrayList<Uri>
+            rootElement.scrollViewMain.visibility = View.GONE
+            val fm = supportFragmentManager.beginTransaction()
+            fm.replace(R.id.place_holder, ImageListFrag(this, arr2))
+            fm.commit()
+        }
 
-        rootElement.scrollViewMain.visibility = View.GONE
-        val fm = supportFragmentManager.beginTransaction()
-        fm.replace(R.id.place_holder, ImageListFrag(this, arr2))
-        fm.commit()
+
+//        val uri1 = Uri.parse("http://google.com")
+//        arr2.add(uri1)
+
+        //arr2.add(uri1)
+
+//        rootElement.scrollViewMain.visibility = View.GONE
+//        val fm = supportFragmentManager.beginTransaction()
+//        fm.replace(R.id.place_holder, ImageListFrag(this, arr2))
+//        fm.commit()
     }
 
     override fun onFragClose() {
