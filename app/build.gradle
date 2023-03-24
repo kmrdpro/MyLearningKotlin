@@ -4,6 +4,10 @@ plugins {
     id 'com.google.gms.google-services'
 }
 
+ext {
+    pixVersion = '1.2.5'
+}
+
 android {
     namespace 'com.kmrd.myapplication'
     compileSdk 32
@@ -36,7 +40,6 @@ android {
         viewBinding true
     }
 }
-
 
 dependencies {
 

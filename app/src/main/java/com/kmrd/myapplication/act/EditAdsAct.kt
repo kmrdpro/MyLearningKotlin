@@ -1,25 +1,35 @@
 package com.kmrd.myapplication.act
 
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.kmrd.myapplication.R
 import com.kmrd.myapplication.databinding.ActivityEditAdsBinding
 import com.kmrd.myapplication.dialogs.DialogSpinnerHelper
+import com.kmrd.myapplication.frag.FragmentCloseInterface
+import com.kmrd.myapplication.frag.ImageListFrag
 import com.kmrd.myapplication.utils.CityHelper
 import com.kmrd.myapplication.utils.ImagePicker
+import io.ak1.pix.helpers.PixBus
 
-class EditAdsAct : AppCompatActivity() {
+class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
+    lateinit var arr2: ArrayList<Uri>
     lateinit var rootElement: ActivityEditAdsBinding
     private val dialog = DialogSpinnerHelper()
-    private var isImagesPermissionGranted = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         rootElement = ActivityEditAdsBinding.inflate(layoutInflater)
         setContentView(rootElement.root)
         init()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     private fun init() {
@@ -56,7 +66,17 @@ class EditAdsAct : AppCompatActivity() {
     }
 
     fun onClickGetImages(view: android.view.View) {
-        ImagePicker.getImages(this)
+//        ImagePicker.getImages(this, 3)
+//        PixBus.results { results -> arr2 = results.data as ArrayList<Uri> }
+
+        rootElement.scrollViewMain.visibility = View.GONE
+        val fm = supportFragmentManager.beginTransaction()
+        fm.replace(R.id.place_holder, ImageListFrag(this, arr2))
+        fm.commit()
+    }
+
+    override fun onFragClose() {
+        rootElement.scrollViewMain.visibility = View.VISIBLE
     }
 
 }
