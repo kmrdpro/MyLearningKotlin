@@ -15,7 +15,8 @@ import io.ak1.pix.models.Ratio
 
 
 object ImagePicker {
-    lateinit var arr: List<Uri>
+    const val MAX_IMAGE_COUNT = 3
+    //lateinit var arr: List<Uri>
 
     fun getImages(context: AppCompatActivity, imageCounter: Int) {
 
@@ -34,7 +35,7 @@ object ImagePicker {
         context.addPixToActivity(R.id.place_holder, options) { result ->
             when (result.status) {
                 PixEventCallback.Status.SUCCESS ->  {
-                    arr = result.data
+                    //arr = result.data
 
                     val fList = context.supportFragmentManager.fragments
                     fList.forEach {

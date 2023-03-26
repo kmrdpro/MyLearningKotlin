@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.kmrd.myapplication.R
+import com.kmrd.myapplication.adapters.ImageAdapter
 import com.kmrd.myapplication.databinding.ActivityEditAdsBinding
 import com.kmrd.myapplication.dialogs.DialogSpinnerHelper
 import com.kmrd.myapplication.frag.FragmentCloseInterface
@@ -17,9 +18,12 @@ import com.kmrd.myapplication.utils.ImagePicker
 import io.ak1.pix.helpers.PixBus
 
 class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
+    private var chooseImageFrag: ImageListFrag? = null
+    var arr2: ArrayList<Uri> = arrayListOf()
 
     lateinit var rootElement: ActivityEditAdsBinding
     private val dialog = DialogSpinnerHelper()
+    private lateinit var imageAdapter: ImageAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,17 +37,9 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     }
 
     private fun init() {
-
+        imageAdapter = ImageAdapter()
+        rootElement.vpImages.adapter = imageAdapter
     }
-
-//    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-//        //super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//        when (requestCode) {
-//            100 -> {
-//                ImagePicker.getImages(this)
-//            }
-//        }
-//    }
 
     //OnClicks
     fun onClickSelectCountry(view: android.view.View) {
@@ -66,29 +62,37 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     }
 
     fun onClickGetImages(view: android.view.View) {
-        var arr2: ArrayList<Uri> = arrayListOf()
-        ImagePicker.getImages(this, 3)
-        PixBus.results { results -> arr2 = results.data as ArrayList<Uri>
-            rootElement.scrollViewMain.visibility = View.GONE
-            val fm = supportFragmentManager.beginTransaction()
-            fm.replace(R.id.place_holder, ImageListFrag(this, arr2))
-            fm.commit()
+
+
+        if (imageAdapter.mainArray.isEmpty()) {
+            ImagePicker.getImages(this, 3)
+            PixBus.results { results ->
+                arr2 = results.data as ArrayList<Uri>
+
+                if (chooseImageFrag == null) {
+                    openChooseImageFragment(arr2)
+                } else if (chooseImageFrag != null) {
+                    chooseImageFrag?.updateAdapter(arr2)
+                }
+            }
+        } else {
+            openChooseImageFragment(imageAdapter.mainArray)
         }
 
-
-//        val uri1 = Uri.parse("http://google.com")
-//        arr2.add(uri1)
-
-        //arr2.add(uri1)
-
-//        rootElement.scrollViewMain.visibility = View.GONE
-//        val fm = supportFragmentManager.beginTransaction()
-//        fm.replace(R.id.place_holder, ImageListFrag(this, arr2))
-//        fm.commit()
     }
 
-    override fun onFragClose() {
+    override fun onFragClose(list: ArrayList<Uri>) {
         rootElement.scrollViewMain.visibility = View.VISIBLE
+        imageAdapter.update(list)
+        chooseImageFrag = null
+    }
+
+    private fun openChooseImageFragment(newList: ArrayList<Uri>) {
+        chooseImageFrag = ImageListFrag(this, newList)
+        rootElement.scrollViewMain.visibility = View.GONE
+        val fm = supportFragmentManager.beginTransaction()
+        fm.replace(R.id.place_holder, chooseImageFrag!!)
+        fm.commit()
     }
 
 }
