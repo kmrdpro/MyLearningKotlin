@@ -36,6 +36,9 @@ object ImagePicker {
             when (result.status) {
                 PixEventCallback.Status.SUCCESS ->  {
                     //arr = result.data
+                    println("ImagePicker")
+
+
 
                     val fList = context.supportFragmentManager.fragments
                     fList.forEach {

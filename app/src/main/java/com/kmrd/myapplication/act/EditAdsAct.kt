@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -14,16 +15,19 @@ import com.kmrd.myapplication.dialogs.DialogSpinnerHelper
 import com.kmrd.myapplication.frag.FragmentCloseInterface
 import com.kmrd.myapplication.frag.ImageListFrag
 import com.kmrd.myapplication.utils.CityHelper
+import com.kmrd.myapplication.utils.ImageManager
 import com.kmrd.myapplication.utils.ImagePicker
 import io.ak1.pix.helpers.PixBus
 
 class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
-    private var chooseImageFrag: ImageListFrag? = null
+    var chooseImageFrag: ImageListFrag? = null
     var arr2: ArrayList<Uri> = arrayListOf()
 
     lateinit var rootElement: ActivityEditAdsBinding
     private val dialog = DialogSpinnerHelper()
     private lateinit var imageAdapter: ImageAdapter
+
+    var editImagePos = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,17 +68,26 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     fun onClickGetImages(view: android.view.View) {
 
 
-        if (imageAdapter.mainArray.isEmpty()) {
+        if (imageAdapter.mainArray.size == 0) {
             ImagePicker.getImages(this, 3)
+
             PixBus.results { results ->
                 arr2 = results.data as ArrayList<Uri>
+                println("EditAdsAct.OnclickGetImages")
 
                 if (chooseImageFrag == null) {
                     openChooseImageFragment(arr2)
+                    println("EditAdsAct.OnclickGetImages ImageList null")
                 } else if (chooseImageFrag != null) {
                     chooseImageFrag?.updateAdapter(arr2)
+                    println("EditAdsAct.OnclickGetImages ImageList NOT null")
                 }
+
+                val tempList = ImageManager.getImageSize(arr2[0], this)
+                Log.d("MyLog", "Image width: ${tempList[0]}")
+                Log.d("MyLog", "Image height: ${tempList[1]}")
             }
+
         } else {
             openChooseImageFragment(imageAdapter.mainArray)
         }
@@ -87,7 +100,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
         chooseImageFrag = null
     }
 
-    private fun openChooseImageFragment(newList: ArrayList<Uri>) {
+    fun openChooseImageFragment(newList: ArrayList<Uri>) {
         chooseImageFrag = ImageListFrag(this, newList)
         rootElement.scrollViewMain.visibility = View.GONE
         val fm = supportFragmentManager.beginTransaction()

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kmrd.myapplication.R
+import com.kmrd.myapplication.act.EditAdsAct
 import com.kmrd.myapplication.databinding.ListImageFragBinding
 import com.kmrd.myapplication.utils.ImagePicker
 import com.kmrd.myapplication.utils.ItemTouchMoveCallback
@@ -66,8 +68,8 @@ class ImageListFrag(private val fragCloseInterface: FragmentCloseInterface, priv
             if (adapter.mainArray.size < 3) {
                 ImagePicker.getImages(activity as AppCompatActivity, imageCount)
                 PixBus.results { results ->
-                    //Toast.makeText(activity, "What!!", Toast.LENGTH_LONG).show()
-                    println("what!")
+                    println("ImageListFrag.addItem")
+
 
                     adapter.updateAdapter(adapter.mainArray, false)
                 }
@@ -79,9 +81,13 @@ class ImageListFrag(private val fragCloseInterface: FragmentCloseInterface, priv
 
     }
 
-
-
     fun updateAdapter(newList: ArrayList<Uri>) {
         adapter.updateAdapter(newList, false)
+    }
+
+    fun setSingleImage(uri: Uri, pos: Int) {
+        adapter.mainArray[pos] = uri
+        adapter.notifyDataSetChanged()
+
     }
 }
