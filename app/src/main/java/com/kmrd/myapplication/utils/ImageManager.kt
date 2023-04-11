@@ -1,11 +1,15 @@
 package com.kmrd.myapplication.utils
 
 import android.app.Activity
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.ExifInterface
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import com.kmrd.myapplication.act.EditAdsAct
+import com.squareup.picasso.Picasso
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.InputStream
 
@@ -48,8 +52,10 @@ object ImageManager {
         }
     }
 
-    fun imageResize(uris: List<Uri>, act: Activity) {
+    suspend fun imageResize(uris: List<Uri>, act: Activity): List<Bitmap> = withContext(Dispatchers.IO) {
         val tempList = ArrayList<List<Int>>()
+        val bitmapList = ArrayList<Bitmap>()
+
         for (n in uris.indices) {
             val size = getImageSize(uris[n], act)
             val imageRatio = size[WIDTH].toFloat() / size[HEIGHT].toFloat()
@@ -69,6 +75,16 @@ object ImageManager {
 
 
         }
+
+        for (i in uris.indices) {
+            kotlin.runCatching {
+                bitmapList.add(Picasso.get().load(uris[i]).resize(tempList[i][WIDTH], tempList[i][HEIGHT]).get())
+            }
+
+        }
+
+
+        return@withContext bitmapList
 
     }
 

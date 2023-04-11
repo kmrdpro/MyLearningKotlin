@@ -1,6 +1,7 @@
 package com.kmrd.myapplication.frag
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -13,14 +14,11 @@ import com.kmrd.myapplication.R
 import com.kmrd.myapplication.act.EditAdsAct
 import com.kmrd.myapplication.utils.ImagePicker
 import com.kmrd.myapplication.utils.ItemTouchMoveCallback
-import io.ak1.pix.PixFragment
-import io.ak1.pix.helpers.PixBus
-import io.ak1.pix.helpers.PixEventCallback
 
 
 class SelectImageRvAdapter: RecyclerView.Adapter<SelectImageRvAdapter.ImageHolder>(), ItemTouchMoveCallback.ItemTouchAdapter {
 
-    val mainArray = ArrayList<Uri>()
+    val mainArray = ArrayList<Bitmap>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.select_image_frag_item, parent, false)
@@ -53,7 +51,7 @@ class SelectImageRvAdapter: RecyclerView.Adapter<SelectImageRvAdapter.ImageHolde
         lateinit var imEditImage: ImageButton
         lateinit var imDeleteImage: ImageButton
 
-        fun setData(item: Uri) {
+        fun setData(bitMap: Bitmap) {
             var arr2 = arrayListOf<Uri>()
             tvTitle = itemView.findViewById(R.id.tvTitle)
             image = itemView.findViewById(R.id.imageContent)
@@ -82,11 +80,11 @@ class SelectImageRvAdapter: RecyclerView.Adapter<SelectImageRvAdapter.ImageHolde
             }
 
             tvTitle.text = context.resources.getStringArray(R.array.title_array)[adapterPosition]
-            image.setImageURI(item)
+            image.setImageBitmap(bitMap)
         }
     }
 
-    fun updateAdapter(newList: List<Uri>, needClear: Boolean) {
+    fun updateAdapter(newList: List<Bitmap>, needClear: Boolean) {
         if (needClear == true) {mainArray.clear()}
         mainArray.addAll(newList)
         notifyDataSetChanged()

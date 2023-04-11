@@ -1,6 +1,7 @@
 package com.kmrd.myapplication.act
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -89,18 +90,20 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
             }
 
         } else {
-            openChooseImageFragment(imageAdapter.mainArray)
+            //openChooseImageFragment(imageAdapter.mainArray)
+            openChooseImageFragment(null)
+            chooseImageFrag?.updateAdapterFromEdit(imageAdapter.mainArray)
         }
 
     }
 
-    override fun onFragClose(list: ArrayList<Uri>) {
+    override fun onFragClose(list: ArrayList<Bitmap>) {
         rootElement.scrollViewMain.visibility = View.VISIBLE
         imageAdapter.update(list)
         chooseImageFrag = null
     }
 
-    fun openChooseImageFragment(newList: ArrayList<Uri>) {
+    fun openChooseImageFragment(newList: ArrayList<Uri>?) {
         chooseImageFrag = ImageListFrag(this, newList)
         rootElement.scrollViewMain.visibility = View.GONE
         val fm = supportFragmentManager.beginTransaction()
