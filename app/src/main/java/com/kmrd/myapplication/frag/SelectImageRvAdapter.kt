@@ -4,26 +4,23 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.kmrd.myapplication.R
 import com.kmrd.myapplication.act.EditAdsAct
+import com.kmrd.myapplication.databinding.SelectImageFragItemBinding
+import com.kmrd.myapplication.utils.AdapterCallback
 import com.kmrd.myapplication.utils.ImagePicker
 import com.kmrd.myapplication.utils.ItemTouchMoveCallback
 
 
-class SelectImageRvAdapter: RecyclerView.Adapter<SelectImageRvAdapter.ImageHolder>(), ItemTouchMoveCallback.ItemTouchAdapter {
+class SelectImageRvAdapter(val AdapterCallback: AdapterCallback): RecyclerView.Adapter<SelectImageRvAdapter.ImageHolder>(), ItemTouchMoveCallback.ItemTouchAdapter {
 
     val mainArray = ArrayList<Bitmap>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.select_image_frag_item, parent, false)
-        return ImageHolder(view, parent.context, this)
+        val viewBinding = SelectImageFragItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ImageHolder(viewBinding, parent.context, this)
     }
 
     override fun getItemCount(): Int {
@@ -46,20 +43,12 @@ class SelectImageRvAdapter: RecyclerView.Adapter<SelectImageRvAdapter.ImageHolde
         notifyDataSetChanged()
     }
 
-    class ImageHolder(itemView: View, val context: Context, val adapter: SelectImageRvAdapter) : RecyclerView.ViewHolder(itemView) {
-        lateinit var tvTitle: TextView
-        lateinit var image: ImageView
-        lateinit var imEditImage: ImageButton
-        lateinit var imDeleteImage: ImageButton
+    class ImageHolder(private val viewBinding: SelectImageFragItemBinding, val context: Context, val adapter: SelectImageRvAdapter) : RecyclerView.ViewHolder(viewBinding.root) {
 
         fun setData(bitMap: Bitmap) {
             var arr2 = arrayListOf<Uri>()
-            tvTitle = itemView.findViewById(R.id.tvTitle)
-            image = itemView.findViewById(R.id.imageContent)
-            imEditImage = itemView.findViewById(R.id.imEditImage)
-            imDeleteImage = itemView.findViewById(R.id.imDelete)
 
-            imEditImage.setOnClickListener {
+            viewBinding.imEditImage.setOnClickListener {
                 ImagePicker.getImages(context as EditAdsAct, 1)
                 context.editImagePos = adapterPosition
 //                PixBus.results { results ->
@@ -74,14 +63,15 @@ class SelectImageRvAdapter: RecyclerView.Adapter<SelectImageRvAdapter.ImageHolde
 //                context.chooseImageFrag?.setSingleImage(arr2.get(0), adapterPosition)
             }
 
-            imDeleteImage.setOnClickListener {
+            viewBinding.imDelete.setOnClickListener {
                 adapter.mainArray.removeAt(adapterPosition)
                 adapter.notifyItemRemoved(adapterPosition)
                 for (n in 0 until adapter.mainArray.size) adapter.notifyItemChanged(n)
+                adapter.AdapterCallback.onItemDelete()
             }
 
-            tvTitle.text = context.resources.getStringArray(R.array.title_array)[adapterPosition]
-            image.setImageBitmap(bitMap)
+            viewBinding.tvTitle.text = context.resources.getStringArray(R.array.title_array)[adapterPosition]
+            viewBinding.imageContent.setImageBitmap(bitMap)
         }
     }
 

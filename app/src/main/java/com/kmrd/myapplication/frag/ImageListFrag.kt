@@ -22,6 +22,7 @@ import com.kmrd.myapplication.R
 import com.kmrd.myapplication.act.EditAdsAct
 import com.kmrd.myapplication.databinding.ListImageFragBinding
 import com.kmrd.myapplication.dialoghelper.ProgressDialog
+import com.kmrd.myapplication.utils.AdapterCallback
 import com.kmrd.myapplication.utils.ImageManager
 import com.kmrd.myapplication.utils.ImagePicker
 import com.kmrd.myapplication.utils.ItemTouchMoveCallback
@@ -31,9 +32,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class ImageListFrag(private val fragCloseInterface: FragmentCloseInterface, private val newList: ArrayList<Uri>?): Fragment() {
+class ImageListFrag(private val fragCloseInterface: FragmentCloseInterface, private val newList: ArrayList<Uri>?): Fragment(), AdapterCallback {
     lateinit var rootElement: ListImageFragBinding
-    val adapter = SelectImageRvAdapter()
+    val adapter = SelectImageRvAdapter(this)
     val dragCallback = ItemTouchMoveCallback(adapter)
     val touchHelper = ItemTouchHelper(dragCallback)
     private var job: Job? = null
@@ -41,6 +42,10 @@ class ImageListFrag(private val fragCloseInterface: FragmentCloseInterface, priv
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootElement = ListImageFragBinding.inflate(inflater)
         return rootElement.root
+    }
+
+    override fun onItemDelete() {
+
     }
 
 

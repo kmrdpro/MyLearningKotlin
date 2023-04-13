@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.ExifInterface
 import android.net.Uri
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.kmrd.myapplication.act.EditAdsAct
 import com.squareup.picasso.Picasso
@@ -44,6 +45,14 @@ object ImageManager {
             0
         }
         return rotation
+    }
+
+    fun chooseScaleType(im: ImageView, bitMap: Bitmap) {
+        if (bitMap.width > bitMap.height) {
+            im.scaleType = ImageView.ScaleType.CENTER_CROP
+        } else {
+            im.scaleType = ImageView.ScaleType.CENTER_INSIDE
+        }
     }
 
     private fun File.copyInStreamToFile(inStream: InputStream) {
